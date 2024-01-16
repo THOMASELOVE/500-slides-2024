@@ -1,0 +1,970 @@
+---
+title: "500 Class 01"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-01-18"
+date-format: iso
+format: 
+  beamer:
+    theme: Madrid
+    colortheme: lily
+    fig-align: center
+---
+
+## Today's Agenda
+
+- Welcome to 500!
+- Course Overview and the Web Site
+- Statistical Philosophy and Problem-Solving
+- What are Observational Studies?
+    + How do we think about causal effects?
+    + Why is randomization so important?
+- The STROBE Guidelines: Items 1-12
+- A Motivating Example: Aspirin and Mortality in Heart Patients
+    + How can we avoid being misled?
+    + Causal Effects as comparing potential outcomes
+
+# Logistics / Getting Started
+
+## Course Overview
+
+* Randomized Experiments vs. Observational Studies
+    + Randomization as the "fundamental basis for inference"
+    + Observational Studies and Causal Effects
+* Propensity Scores: Crucial Tools for Causal Models
+    + Selection Bias: key issue for observational studies
+    + Dealing with Bias (both overt and hidden)
+    + Subclassification (stratification) and direct regression adjustment
+    + Matching and weighting using the Propensity Score
+    + Sensitivity Analysis
+* Instrumental Variables and Other Techniques
+* Using R, RStudio and Quarto to accomplish all of this
+
+Paul Rosenbaum's 2023 book *Causal Inference*
+
+## My Expectations
+
+* You are interested in learning about the effects of an intervention, treatment or policy on subjects when the treatments cannot be assigned at random.
+* You have little interest in technical details of methods, but serious interest in designing, conducting and analyzing observational studies skillfully.
+* You have access to software (specifically R) which you can use to obtain basic hypothesis testing, regression and logistic regression results.
+
+## Timing of Sessions
+
+- The sessions are scheduled from 8:30 AM to 11:15 AM, but after today, we'll usually run 9 to 11 AM.
+- For all sessions, Dr. Love is available after class for informal "office hours".
+- Recordings of class sessions will be available through Zoom on Canvas when things work properly.
+
+## Teaching Assistant
+
+Leila Hojat holds office hours on Mondays and Wednesdays from 5 to 6 PM over Zoom. Details on Zoom connection for these office hours are on our **Shared Google Drive**. 
+
+Leila Hojat is a former PQHS 500 student who completed the course in Spring 2022 as part of the Masters in Biostatistics Program. She is an Assistant Professor in the Department of Medicine/ Division of Infectious Diseases at CWRU and a physician at University Hospitals. Feel free to reach out to her to discuss class topics as well as any of her personal interests such as cats, wellness, and creative sustainability approaches.
+
+- More on Leila in [the Syllabus](https://thomaselove.github.io/500-syllabus-2024/).
+
+
+## The Web Site
+
+<https://thomaselove.github.io/500-2024> is at the bottom of every slide
+
+- Syllabus
+- Calendar
+    - links to class sessions, final word on all deadlines
+- R and Data
+    - Installing/Updating R, RStudio, R Packages
+    - Data and Code
+- Sources / References
+    - Some things are **password-protected**.
+- Links to Canvas, and to ways to Contact Us
+- Assignments ...
+
+## Assignments / Deliverables
+
+1. Course Project
+    - Semester-long project, with your first proposal draft due 2024-02-20.
+    - Second proposal draft 2024-03-05 and update due 2024-04-02.
+    - Final presentation of your work April 11, 18, 25 or May 2
+2. Observational Studies in Action
+    - Present methods/results from a published article using propensity scores.
+    - You'll present once as primary reviewer, once as second reviewer.
+    - First step is to identify a study and claim it by 2024-02-06.
+3. Labs
+    - Lab 01 is due Thursday 2024-02-01 at 9 AM (start of class)
+    - There is a "Lab 0" worked example to look at this week.
+    - Deadlines and instructions for all 4 graded labs are on the website.
+
+There are no quizzes or examinations in 500.
+
+## A Key Goal for the Project and Course
+
+* Help you learn how to tackle a problem, rather than just be able to perform particular statistical techniques.
+    + Goal: think and solve problems when trying to infer causal effects from observational data
+* But the need to think in statistical terms is omnipresent
+    + Identifying researchable problems
+    + Dealing with variation
+    + Interplay of Design and Analysis
+    + Preparing, writing and revising results, in a replicable way.
+
+# What is this course about?
+
+## Comparative Effectiveness Studies
+
+- We have an outcome measured on two groups of subjects 
+    - Let's refer to them as the treated group and the control group.
+- We want to make a fair comparison between the treated group and the control group in terms of the outcome.
+    - We want to ensure that the groups are comparable in terms of **covariates** (that describe the subjects before the treatments are applied.)
+    - If they aren't comparable, it will be difficult for us to make a fair comparison.
+
+## Stages of a Statistical Investigation
+
+Statistical thinking is required in all stages of the investigation:
+
+1. Planning the Study
+2. Collecting the Data
+3. Analyzing the Results
+4. Interpreting the Analyses
+5. Presenting the Study
+
+We'll spend some time in all five stages.
+
+## Early Stages of an (Idealized) Investigation
+
+* Understand the problem, then formulate it in statistical terms.
+    + Clarify the objectives very carefully.  Ask as many questions as necessary.  Search the literature. 
+* Plan the investigation and collect the data in an appropriate way.
+    + Achieve a fair balance between the effort expended in collecting the data, and in analyzing them.
+    + Method of collection crucial to further analysis.
+
+## Middle Stages of an (Idealized) Investigation
+
+* Assess the structure and quality of the data.
+    + Coding, typing, editing, etc.
+    + Data cleaning: looking for errors, outliers, missing
+    + Decide how to deal with peculiarities.
+    + How much time does this take?
+* Describe the data / identify interesting features
+    + Descriptive summary is sometimes all you need
+    + Always helpful in motivating further analyses
+    + Ever done a power calculation?
+
+## Final Stages of an (Idealized) Investigation
+
+* Select and carry out appropriate analyses
+    + Often assume a particular model structure, set out in advance
+    + Estimate parameters, test hypotheses
+    + Check adequacy of fitted model, through residual analysis and considering refinements
+* Compare findings with prior results and acquire further data as necessary
+* Interpret and communicate the results
+
+## Philosophical Biases
+
+* Emphasis on the initial examination of data
+    + Essential precursor to model-building
+    + Allows us to ``design'' our analyses suitably
+    + Harder than it looks, even after the data are ``clean''
+* Robust near-optimal solutions beat ``optimal'' solutions that rely on dubious assumptions
+    + Assumptions are unlikely to be satisfied exactly and may be seriously in error.
+    + In observational studies, assumptions are always important. We are looking for safe, practical and reliable approaches.
+
+## What this course is about...
+
+An **observational study** concerns treatment, interventions or policies and the effects they cause, and in this respect it resembles an experiment.  
+
+A study without a treatment is neither an experiment nor an observational study.
+
+In an experiment, the assignment of treatments to subjects is controlled by the experimenter, who ensures that subjects receiving different treatments are comparable.  In an observational study, this control is absent.
+
+> Rosenbaum 2002 *Observational Studies*, Chapter 1
+
+---
+
+![looking1.png](c01/figures/looking1.png)
+
+---
+
+![looking2.png](c01/figures/looking2.png)
+
+---
+
+![looking3.png](c01/figures/looking3.png)
+
+---
+
+![looking4.png](c01/figures/looking4.png)
+
+---
+
+![looking5.png](c01/figures/looking5.png)
+
+---
+
+![looking6.png](c01/figures/looking6.png)
+
+---
+
+![rand1.png](c01/figures/rand1.png)
+
+---
+
+![rand2.png](c01/figures/rand2.png)
+
+---
+
+![rand3.png](c01/figures/rand3.png)
+
+---
+
+![rand4.png](c01/figures/rand4.png)
+
+---
+
+![rand5.png](c01/figures/rand5.png)
+
+---
+
+![rand6.png](c01/figures/rand6.png)
+
+---
+
+![rand7.png](c01/figures/rand7.png)
+
+## USPSTF Evidence Grades, 2000 (see Concato)
+
+![concato-table1.PNG](c01/figures/concato-table1.PNG)
+
+# Thinking about Randomized Clinical Trials
+
+## The Importance of Randomization
+
+We want to compare groups who looked similar **before** they were exposed to interventions/treatments.
+
+- Randomization tends to produce relatively comparable or ``balanced'' treatment groups in large experiments.
+    + The covariates are not used in assigning treatments in an experiment.
+    + There is no *deliberate* balancing of the covariates: it's just a nice feature of randomization.
+- We have some reason to hope and expect that other (unmeasured) variables will be balanced, as well.
+
+## A Randomized Clinical Trial (RCT) of Coronary Surgery
+
+- VA conducted a randomized controlled experiment for coronary artery disease
+    + Coronary artery bypass surgery vs.
+    + Medical therapy (Drug treatments)
+- 596 patients at 13 VA hospitals
+    + 286 got surgery, 310 got medical therapy
+    + Random Assignment of Treatments
+    + Were the subjects comparable? Is it appropriate to check?
+- To whom do we wish to make inferences?
+- What is our actual research question?
+
+## Baseline Comparison of VA Coronary Patients RCT
+
+Covariate (pre-treatment) | Medical \% | Surgery \%
+------------------------: | ---------: | ---------:
+NY Heart Assoc. Class II \& III | 94.2 | 95.4
+History of myocardial infarction (MI) | 59.3 | 64.0
+Definite / possible MI (electrocardiogram) | 36.1 | 40.5
+Duration of chest pain > 25 mos. | 50.0 | 51.8
+History of hypertension | 30.0 | 27.6
+History of congestive heart failure | 8.4 | 5.2
+Cardiothoracic ratio > 0.49 | 10.4 | 12.2
+Serum cholesterol > 249 mg/dl \*\* | 31.6 | 20.6 
+
+\*\* $p < 0.05$ for difference between medical and surgery groups
+
+## Results of the VA Coronary Surgery Trial
+
+- The VA study compared survival in the two groups three years after treatment.
+    + Survival in the medical group was 87%
+    + Survival in the surgical group was 88%
+    + Both had a standard error of 2%, so the 1 percentage point difference in mortality was not significant
+- Evidently, when comparable groups of patients received medical and surgical treatment at VA hospitals, outcomes were quite similar.
+
+Note that a 1984 NEJM follow-up (11-year survival) is available at https://pubmed.ncbi.nlm.nih.gov/6333636/.
+
+## Why wouldn't you always do experiments?
+
+- Any thoughts?
+
+- Are there situations where random assignment of subjects to exposures/treatments is not possible?
+
+## Why not always do experiments?
+
+- The treatment might be harmful and cannot be given to human subjects for experimental purposes.
+- The treatment may be controlled by a political process that will not yield control.
+- The treatment may be beyond the legal reach of experimental manipulation.
+- Experimental subjects may have strong attachments to particular treatments.
+
+It's a false choice - it's not really possible to do "only" experiments or "only observational studies.
+
+## Why does observational inference matter?
+
+Adapted from [Emily Riederer](https://emilyriederer.netlify.app/post/causal-design-patterns/) (see Sources page)
+
+- Even when you can experiment, understanding observational causal inference can help you better identify biases and design your experiments
+- Testing can be expensive. 
+  - There are direct costs of instituting a policy that might not be effective, implementation costs, and opportunity costs (holding out a control group and not applying what you hope to be a good strategy as broadly as possible.)
+- Randomized experimentation is harder than it sounds! Sometimes experiments may not go as planned, but treating the results as observational data may help salvage some information value.
+- Data collection can take time. When we long to read an experiment that wasn’t launched three years ago, historical observational data can help us get a preliminary answer sooner.
+
+Sometimes, we have other problems...
+
+## The MRFIT Trial
+
+Multiple Risk Factor Intervention Trial  (*JAMA* 1982)\footnote{Multiple risk factor intervention trial. Risk factor changes and mortality results. Multiple Risk Factor Intervention Trial Research Group. JAMA
+. 1982 Sep 24;248(12):1465-77. https://pubmed.ncbi.nlm.nih.gov/7050440/}
+
+> The Multiple Risk Factor Intervention Trial was a randomized primary prevention trial to test the effect of a multifactor intervention program on mortality from coronary heart disease (CHD) in 12,866 high-risk men aged 35 to 57 years. 
+
+> - Men were randomly assigned to a special intervention (SI) program or to usual care (UC)
+    + SI includes stepped-care treatment for hypertension, counseling for cigarette smoking, and dietary advice for lowering blood cholesterol. 
+> - Men were followed for an average of seven years
+    + Risk factor levels declined in both groups, more in the SI group.
+    + CHD mortality 17.9 deaths/1000 in SI, 19.3 in UC (not sig.)
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclusions if ...
+    + Low risk of CHD
+    + History of MI
+    + Diabetes
+    + Geographic Mobility is an issue
+    + Cholesterol > 350
+    + DBP > 115
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclusions if ...
+    + Low risk of CHD
+    + History of MI
+    + Diabetes
+    + Geographic Mobility is an issue
+    + Cholesterol > 350
+    + DBP > 115
+
+How many men do you suppose this leaves in the study?
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclusions if ...
+    + Low risk of CHD
+    + History of MI
+    + Diabetes
+    + Geographic Mobility is an issue
+    + Cholesterol > 350
+    + DBP > 115
+
+These exclusions affected 336,117 of the men.
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclude 336,117 men, leaving 25,545 candidates for screening.
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclude 336,117 men, leaving 25,545 candidates for screening. 
+2. Screen 25,545 men.
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclude 336,117 men, leaving 25,545 candidates for screening. 
+2. Screen 25,545 men, and exclude if...
+    + Body Weight is more than 150\% of expected
+    + Angina
+    + Evidence of MI
+    + Consuming a special diet
+    
+How many of these 25,545 men will be left?
+    
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclude 336,117 men, leaving 25,545 candidates for screening. 
+2. Screen 25,545 men, and exclude if...
+    + Body Weight is more than 150\% of expected
+    + Angina
+    + Evidence of MI
+    + Consuming a special diet
+
+And this affects 12,678 of these men.
+
+## Example of RCT Subject Selection (MRFIT)
+
+Start with 361,662 men ages 35-57
+
+1. Exclude 336,117 men, leaving 25,545 candidates for screening. 
+2. Screen 25,545 men, and exclude 12,678.
+3. Take the remaining sample of 12,866 and randomize into ...
+    + one group of 6,428 men
+    + and the other group of 6,438 men
+
+Bottom Line: MRFIT excluded 96.4\% of potential eligibles.
+
+## Smith and Pell, BMJ 2003
+
+![smithandpell1.PNG](c01/figures/smithandpell1.PNG)
+
+## Smith and Pell, BMJ 2003
+
+![smithandpell2.PNG](c01/figures/smithandpell2.PNG)
+
+---
+
+**It is a truth universally acknowledged that a medical intervention justified by observational data must be in want of verification through a randomized controlled trial.**
+
+Observational studies have been tainted by accusations of data dredging, confounding, and bias. 
+
+- For example, observational studies showed lower rates of ischaemic heart disease among women using hormone replacement therapy, and these data were interpreted as advocating hormone replacement for healthy women, women with established ischaemic heart disease, and women with risk factors for ischaemic heart disease.
+- However, randomised controlled trials showed that hormone replacement therapy actually increased the risk of ischaemic heart disease, indicating that the apparent protective effects seen in observational studies were due to bias. 
+
+Cases such as this one show that medical interventions based solely on observational data should be carefully scrutinised, and the parachute is no exception.
+
+
+## The ``Healthy Cohort'' Effect, from Smith and Pell
+
+One of the major weaknesses of observational data is the possibility of bias, including selection bias and reporting bias, which can be obviated largely by using randomised controlled trials. The relevance to parachute use is that individuals jumping from aircraft without the help of a parachute are likely to have a high prevalence of pre-existing psychiatric morbidity.  
+
+Individuals who use parachutes are likely to have less psychiatric morbidity and may also differ in key demographic factors, such as income and cigarette use. 
+
+It follows, therefore, that the apparent protective effect of parachutes may be merely an example of the ``**healthy cohort**'' effect. Observational studies typically use multivariate analytical approaches, using maximum likelihood based modeling methods to try to adjust estimates of relative risk for these biases. 
+
+Distasteful as these statistical adjustments are for the cognoscenti of evidence based medicine, no such analyses exist for assessing the presumed effects of the parachute.
+
+## from Smith and Pell
+
+![smithandpell3.PNG](c01/figures/smithandpell3.PNG) 
+
+## A call to (broken) arms
+
+Only two options exist. 
+
+The first is that we accept that, under exceptional circumstances, common sense might be applied when considering the potential risks and benefits of interventions. 
+
+The second is that we continue our quest for the holy grail of exclusively evidence based interventions and preclude parachute
+use outside the context of a properly conducted trial.
+
+The dependency we have created in our population may make recruitment of the unenlightened masses to such a trial difficult. If so, we feel assured that those who advocate evidence based medicine and criticise use of interventions that lack an evidence base will not hesitate to demonstrate their commitment by volunteering for a double blind, randomised, placebo controlled, crossover trial.
+
+> Smith and Pell, 2003
+
+## Contributors
+
+GCSS had the original idea. JPP tried to talk him out of it. 
+
+JPP did the first literature search but GCSS lost it. 
+
+GCSS drafted the manuscript but JPP deleted all the best jokes. 
+
+GCSS is the guarantor, and JPP says it serves him right.
+
+# Thinking More About Observational Studies
+
+---
+
+![rand7.png](c01/figures/rand7.png)
+
+---
+
+![obsstud1.png](c01/figures/obsstud1.png)
+
+## Without Randomization ...
+
+We still want to compare groups who looked similar **before** they were exposed to our treatments.
+
+- But we don't control the assignment of treatments.
+    + Cannot use randomization to ensure comparability
+- So how, then, do we make fair comparisons?
+    + Analytical adjustments to account for baseline (covariate) differences in the groups.
+    + A study is **biased** if the treatment groups differ in ways that matter for the outcome we're studying.
+    
+## Observational Studies to Estimate Causal Effects
+
+- An observational study (OS) concerns treatments and their effects, BUT the researcher does not control (cannot randomize) the assignment of treatments
+- We want to compare groups receiving the two treatments who looked similar prior to the treatment assignment.
+- Analytical adjustments required to account for baseline (covariate) differences.
+
+## Data Collection Strategies
+
+- Experiments require active intervention by the investigator.  
+- An OS is more passive, but often attempts to look at the same sort of effect.
+   + Retrospective trials observe responses on carefully selected subjects, whose history is then examined to assess which variables are important in determining the condition of interest.
+   + Prospective trials are safer, more time-consuming.
+
+## USPSTF Grade Definitions (2012)
+
+![](c01/figures/uspstf2012a.png)
+
+https://www.uspreventiveservicestaskforce.org/Page/Name/grade-definitions
+
+---
+
+![](c01/figures/uspstf2012b.png)
+
+## "Simple" Observational Studies
+
+- We have an outcome measured on two groups of subjects (treated and control).
+- We want to make a fair comparison between the treated group and the control group in terms of the outcome.
+- We can obtain covariates that describe the subjects before they received treatments, but we **can't ensure** that the groups will be comparable in terms of the covariates.
+
+## The Key Role of Assumptions
+
+We'd like to describe cause-effect relationships from non-experimental data. This is challenging.
+
+> ... the elucidation of causal relationships from observational studies must be shaped by knowledge (or assumptions) about how the data were generated; such assumptions are crucial to causal inference.
+
+> - Judea Pearl (2000) Causal Inference in the Health Sciences: A Conceptual Introduction *Health Services & Outcomes Research Methodology* 2: 189-220.
+
+> - You might be interested as well in [The Book of Why](http://bayes.cs.ucla.edu/WHY/) by Judea Pearl and Dana Mackenzie.
+
+
+## How Randomization Works
+
+1. Identify experimental units.
+    + Inferences refer only to these units, typically.
+2. Define a collection of possible assignments of treatments to units.
+    + Exclude unreasonable assignments from the collection.
+3. Define a stochastic mechanism for selecting one assignment from the collection.
+    + Complete randomization vs. Blocked randomization
+    + Biased coin / ``balancing'' randomization
+4. Select one assignment from the collection using the mechanism.
+5. Use the stochastic mechanism as the sole basis for inference.
+
+## Randomized vs. Non-Randomized Studies
+
+- In a non-randomized study, we'd no longer KNOW the distribution of treatment assignments.
+- We need to make some assumption about the distribution in order to make inferences.
+- Moreover, there may be little basis on which to ground or defend this assumption.  It may be wrong, or open to challenge.
+
+## The Role of Assumptions
+
+Scenario | Goal of Analysis | Role of Assumptions
+:--------: | :----------------: | :------------------:
+Randomized | Testing $H_0$: | 
+Experiments | No treatment effect | None
+
+
+
+## The Role of Assumptions
+
+Scenario | Goal of Analysis | Role of Assumptions
+:--------: | :----------------: | :------------------:
+Randomized | Testing $H_0$: | 
+Experiments | No treatment effect | None
+ | | 
+Randomized | Estimating treatment | 
+Experiments | effects, CIs | Minor
+ | | 
+
+
+## The Role of Assumptions
+
+Scenario | Goal of Analysis | Role of Assumptions
+:--------: | :----------------: | :------------------:
+Randomized | Testing $H_0$: | 
+Experiments | No treatment effect | None
+ | | 
+Randomized | Estimating treatment | 
+Experiments | effects, CIs | Minor
+ | | 
+Observational | |
+Studies | Anything | **MASSIVE**
+
+## Why are Experiments *Better* Than Observational Studies?
+
+Scientific questions are not settled on a particular date by a single event.  Rather, we speak of the ``weight of evidence.''
+
+- Experiments leave fewer grounds for doubt.
+- Experiments often settle questions faster.
+- Uncertainty about treatment effects is greater in the absence of randomization.
+- With observational studies, we are especially concerned about sensitivity to hidden bias.
+
+## Advantages of **Smart** Observational Studies
+
+- Address chief criticism of randomized trials: limited generalizability / external validity
+- Enable examination of exposure in ``real life''
+- May enable examination of effect size and ``entrenched practices''
+- Broader array of exposures and outcomes can be explored with an observational study than in controlled experiments.
+- Due to frequently large size, can provide information about exposures with small effect sizes (toxicity of treatments)
+- Data are widely (increasingly) available
+- Often reduced cost and time to get answer
+
+BUT No randomization forces the investigator to think hard about **how exposures were assigned** or determined.
+
+## Characteristics of Excellent Observational Studies
+
+- Careful choice of research hypothesis: narrow, controlled examination of a broad theory
+- Use of a control group (subjects who did not receive the treatment) carefully selected
+- Careful choice of treatment: Sharply distinct treatments that could happen to anyone
+- Competing **theories**, not just $H_0$ and $H_A$: desirability of multiple working hypotheses.
+
+# The STROBE Guidelines for Reporting Observational Studies
+
+## STROBE Guidelines
+
+<https://www.strobe-statement.org/>
+
+
+> STROBE stands for an international, collaborative initiative of epidemiologists, methodologists, statisticians, researchers and journal editors involved in the conduct and dissemination of observational studies, with the common aim of STrengthening the Reporting of OBservational studies in Epidemiology.
+
+## STROBE Checklist
+
+Checklist of items that should be included in reports of observational studies
+
+- Title and Abstract (item 1)
+- Introduction (items 2-3)
+- Methods (items 4-12)
+- Results (items 13-17)
+- Discussion (items 18-21)
+- Other Information (funding: item 22)
+
+18 items are common to all three study designs and four (6, 12, 14 and 15) are specific for cohort, case-control, or cross-sectional studies.
+
+We'll briefly discuss items 1-12 today, leaving 13-22 for next time.
+
+## STROBE Items 1-3
+
+Title and abstract	
+
+1	(a) Indicate the study’s design with a commonly used term in the title or the abstract
+1 (b) Provide in the abstract an informative and balanced summary of what was done and what was found.
+
+Background/rationale	
+
+2	Explain the scientific background and rationale for the investigation being reported
+
+Objectives	
+
+3	State specific objectives, including any pre-specified hypotheses
+
+## STROBE Items 4-5
+
+Study design	
+
+4	Present key elements of study design early in the paper
+
+Setting	
+
+5	Describe the setting, locations, and relevant dates, including periods of recruitment, exposure, follow-up, and data collection
+
+## STROBE Item 6: Participants	
+
+(a) Cohort study—Give the eligibility criteria, and the sources and methods of selection of participants. Describe methods of follow-up. Case-control study—Give the eligibility criteria, and the sources and methods of case ascertainment and control selection. Give the rationale for the choice of cases and controls. Cross-sectional study—Give the eligibility criteria, and the sources and methods of selection of participants.
+
+(b) Cohort study—For matched studies, give matching criteria and number of exposed and unexposed. Case-control study—For matched studies, give matching criteria and the number of controls per case. 
+
+## STROBE Items 7-9 
+
+Variables	
+
+7	Clearly define all outcomes, exposures, predictors, potential confounders, and effect modifiers. Give diagnostic criteria, if applicable
+
+Data sources/ measurement	
+
+8	 For each variable of interest, give sources of data and details of methods of assessment (measurement). Describe comparability of assessment methods if there is more than one group
+
+Bias	
+
+9	Describe any efforts to address potential sources of bias
+
+
+## STROBE Items 10-11
+
+Study size	
+
+10	Explain how the study size was arrived at
+
+Quantitative variables	
+
+11	Explain how quantitative variables were handled in the analyses. If applicable, describe which groupings were chosen and why
+
+## STROBE Item 12: Statistical Methods
+
+(a) Describe all statistical methods, including those used to control for confounding
+
+(b) Describe any methods used to examine subgroups and interactions
+
+(c) Explain how missing data were addressed
+
+(d) Cohort study—If applicable, explain how loss to follow-up was addressed. Case-control study—If applicable, explain how matching of cases and controls was addressed. Cross-sectional study—If applicable, describe analytical methods taking account of sampling strategy
+
+(e) Describe any sensitivity analyses
+
+## STROBE Items 13-22
+
+Items 13-17 are about **Results** (Participants, Descriptive Data, Outcome Data, Main Results, Other Analyses)
+
+Items 18-21 are about **Discussion** (Key Results, Limitations, Interpretation, Generalizability)
+
+Item 22 (below) is about Other Information (Funding)
+
+> Give the source of funding and the role of the funders for the present study and, if applicable, for the original study on which the present article is based
+
+## STROBE Articles
+
+<https://www.strobe-statement.org/strobe-publications/>
+
+An Explanation and Elaboration article discusses each checklist item and gives methodological background and published examples of transparent reporting.
+
+
+# A Motivating Example (Aspirin and Mortality)
+
+## Aspirin and Mortality in Heart Patients
+
+Suppose you want to understand the effect of aspirin (acetylsalicylic acid: ASA) on mortality among patients undergoing stress echocardiography.
+
+- What is the population?
+- What is the outcome?
+- What are the treatments?
+
+##
+
+![](c01/figures/aspirin/Slide2.png)
+
+##
+
+![](c01/figures/aspirin/Slide3.png)
+
+##
+
+![](c01/figures/aspirin/Slide4.png)
+
+## ASA and Mortality in Heart Patients
+
+Suppose you want to understand aspirin's effect on all-cause five-year mortality among patients undergoing stress echocardiography.
+
+- Comparing ASA to "No ASA"
+- What are the potential outcomes here?
+
+##
+
+![](c01/figures/aspirin/Slide6.png)
+
+##
+
+![](c01/figures/aspirin/Slide7.png)
+
+##
+
+![](c01/figures/aspirin/Slide8.png)
+
+## ASA and Mortality in Heart Subjects
+
+- Suppose you want to study the effect of aspirin (acetylsalicylic acid: ASA) on all-cause mortality.
+- You identify an interesting group of Subjects as those undergoing stress echocardiography.
+    - Your goal is to compare ASA Subjects to "no ASA" Subjects
+
+What would be the **ideal** study?
+
+Step 1. Identify a large group of Subjects from the population at Time 0.
+
+- We want to understand the causal effect of aspirin on all-cause five-year mortality among patients undergoing stress echocardiography.
+- Having identified a set of patients, what is the ideal study?
+
+Step 2?
+
+##
+
+![](c01/figures/aspirin/Slide10.png)
+
+##
+
+![](c01/figures/aspirin/Slide11.png)
+
+##
+
+![](c01/figures/aspirin/Slide12.png)
+
+##
+
+![](c01/figures/aspirin/Slide13.png)
+
+##
+
+![](c01/figures/aspirin/Slide14.png)
+
+##
+
+![](c01/figures/aspirin/Slide15.png)
+
+##
+
+![](c01/figures/aspirin/Slide16.png)
+
+##
+
+![](c01/figures/aspirin/Slide17.png)
+
+##
+
+![](c01/figures/aspirin/Slide18.png)
+
+##
+
+![](c01/figures/aspirin/Slide19.png)
+
+
+##
+
+![](c01/figures/aspirin/Slide20.png)
+
+##
+
+![](c01/figures/aspirin/Slide21.png)
+
+##
+
+![](c01/figures/aspirin/Slide22.png)
+
+##
+
+![](c01/figures/aspirin/Slide23.png)
+
+##
+
+![](c01/figures/aspirin/Slide24.png)
+
+##
+
+![](c01/figures/aspirin/Slide25.png)
+
+##
+
+![](c01/figures/aspirin/Slide26.png)
+
+## ASA and Mortality in Heart Patients
+
+- Designing the Study
+
+We want to understand aspirin's effect on all-cause five-year mortality among patients undergoing stress echocardiography.
+
+- OK.
+- What's the best **practical** study?
+
+##
+
+![](c01/figures/aspirin/Slide28.png)
+
+##
+
+![](c01/figures/aspirin/Slide29.png)
+
+
+##
+
+![](c01/figures/aspirin/Slide30.png)
+
+##
+
+![](c01/figures/aspirin/Slide31.png)
+
+##
+
+![](c01/figures/aspirin/Slide32.png)
+
+##
+
+![](c01/figures/aspirin/Slide33.png)
+
+##
+
+![](c01/figures/aspirin/Slide34.png)
+
+## ASA and Mortality in Heart Patients
+
+- Designing the Study
+
+We want to understand aspirin's effect on all-cause five-year mortality among patients undergoing stress echocardiography.
+
+- But what if we **cannot** do an RCT?
+
+##
+
+![](c01/figures/aspirin/Slide36.png)
+
+##
+
+![](c01/figures/aspirin/Slide37.png)
+
+##
+
+![](c01/figures/aspirin/Slide38.png)
+
+##
+
+![](c01/figures/aspirin/Slide39.png)
+
+
+##
+
+![](c01/figures/aspirin/Slide40.png)
+
+##
+
+![](c01/figures/aspirin/Slide41.png)
+
+##
+
+![](c01/figures/aspirin/Slide42.png)
+
+## How Do We Avoid Being Misled?
+
+- What differentiates an observational study from a randomized controlled trial?
+    - One key element: potential for selection bias.
+- What is selection bias and what can we do about it?
+    - Baseline characteristics of comparison groups are different in ways that affect the outcome.
+
+We will often distinguish between overt and hidden bias. 
+
+- Overt Bias (seen in data - propensity scores can help)
+- Hidden Bias (required data not collected - requires sensitivity analyses)
+
+## Aspirin Use and Mortality - The Real Study
+
+6174 consecutive adults at CCF undergoing stress echocardiography for evaluation of known or suspected coronary disease\footnote{Gum PA et al. Aspirin use and all-cause mortality among patients being evaluated for known or suspected coronary artery disease: A propensity analysis JAMA 2001 Sep 12; 286(10): 1187-94. https://pubmed.ncbi.nlm.nih.gov/11559263/}.
+
+- 2310 (37\%) were taking aspirin (treatment).
+- Main Outcome: all-cause mortality 
+    + Median follow-up: 3.1 years
+- Univariate Analysis: 4.5\% of aspirin patients died, and 4.5\% of non-aspirin patients died.
+    + Unadjusted Hazard Ratio: 1.08 (0.85, 1.39)
+
+More on this study to come.
+
+# Next Time...
+
+## Next Class - Thursday 2024-01-25
+
+- How Can We Avoid Being Misled by Observational Studies?
+    + What is **selection bias** and why should I care about it?
+    + What can be done to deal with selection bias in observational studies?
+- What is a propensity score, and how do we ... 
+    + estimate it, 
+    + see how well it's working, and
+    + use it to estimate causal effects?
+
+The slides I use will be posted to the Class 02 README.
+
+## Next Class - Thursday 2024-01-25
+
+We'll meet 9:00 to 11:00 AM. Key things we'll discuss include:
+
+- Lab 0
+- Rosenbaum (2023) Chapters 1-3
+- STROBE statement Items 13-21
+- Abramson Chapter 2
+- McGowan blog post
+- Bradford Hill (1965)
