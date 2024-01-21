@@ -1,7 +1,7 @@
 ---
 title: "500 Class 02"
-author: "<https://thomaselove.github.io/500-2023/>"
-date: "2023-01-26"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-01-25"
 date-format: iso
 format: 
   beamer:
@@ -10,8 +10,9 @@ format:
     fig-align: center
 ---
 
-## Today's Agenda: Part One
+## Today's Agenda
 
+- STROBE checklist (items 13-21)
 - The Hormone Replacement Therapy Story
     - Can Selection Bias Explain the Story?
 - Tools for Assessing Causal Effects
@@ -19,6 +20,40 @@ format:
     - Using Matched Sets to Adjust for Overt Bias
 - Defining and Motivating the Propensity Score
 - Matching using the Propensity Score: The Key Ideas
+    - Some Foundations
+    - How the PS is used in 1:1 matching
+- Discussion of Rosenbaum, Chapters 1-3
+
+# The STROBE checklist
+
+## STROBE checklist on Results
+
+13. Participants
+14. Descriptive Data
+15. Outcome Data
+16. Main Results (unadjusted and adjusted estimates)
+17. Other Analyses (subgroups, etc.)
+
+## STROBE checklist on Discussion
+
+18. Key Results (refer to Study Objectives)
+19. Limitations (including sources of potential bias)
+20. Interpretation (a *cautious* interpretation - see next slide for discussion of causation vs. correlation)
+21. Generalizability (external validity)
+
+## McGowan blog post and Bradford Hill (1965)
+
+Causation or Association?
+
+- Strength of effect
+- Consistency (reliability and replicability)
+- Specificity
+- Temporality
+- Biological gradient (dose effect, essentially)
+- Plausibility
+- Coherence (with what is known in the field)
+- Experiment (implement a counterfactual)
+- Analogy (similar effect from similar exposure?)
 
 # The Hormone Replacement Therapy Story
 
@@ -145,6 +180,16 @@ Comparing NHS (OS) to WHI (RCT)
 3. What can be done to deal with selection bias in observational studies?
     + **Propensity score** methods for overt bias.
     + *Sensitivity analyses* to deal with hidden bias.
+
+## Benson and Hartz 2000
+
+A Comparison of Observational Studies and Randomized, Controlled Trials
+
+> For many years it has been claimed that observational studies find stronger treatment effects than randomized, controlled trials.
+
+> In only 2 of the 19 analyses of treatment effects did the combined magnitude of the effect in observational studies lie outside the 95% CI for the combined magnitude in the RCTs.
+
+> We found little evidence that estimates ... in observational studies reported after 1984 are ... qualitatively different from those obtained in RCTs.
 
 # Tools for Assessing Causal Effects
 
@@ -299,6 +344,8 @@ Outcome: mortality rates of US male [1] cigarette smokers, [2] cigar/pipe smoker
 - Also, if $p$ is large, some subclasses will contain no units, or will contain only exposed or unexposed units but not both.
 
 A solution? Propensity scores.
+
+
 
 ## Aspirin Use and Mortality (Gum 2001)
 
@@ -556,14 +603,6 @@ Now, we can estimate the **impact of the exposure** on each matched patient.
 
 I'll demonstrate R code for all of these ideas soon. 
 
-## Agenda Part Two
-
-- More on Propensity Scores
-    1. A little reminder of some key points
-    2. Schematics to understand how the PS is used in 1:1 matching
-- Rosenbaum Chapters 1-2 (Part I. Randomized Experiments)
-    1. A Randomized Trial
-    2. Structure
 
 # Using the Propensity Score
 
@@ -715,15 +754,55 @@ I'll demonstrate R code for all of these ideas soon, but first, we'll discuss th
 
 - But if our propensity model misses an important reason why subjects are selected to an exposure, we'll be in trouble, and we'll **never know it**.
 
-# Rosenbaum, Chapters 1-2
+# Discussing What You've Read
 
-## Rosenbaum, Part I
+## Abramson Chapter 2
 
-1. A Randomized Trial
-2. Structure
-3. *Causal Inference in Randomized Experiments*
-4. *Irrationality and Polio*
+from *Overdosed America*, Spinning the Evidence: Even the most respected medical journals are not immune...
 
-- What was the most **important** thing you learned from reading Chapters 1-2?
+- The Devil is in the (Statistical) Details
+- Studying the Wrong People
+- Collaboration in the Academy
+- Two Articles on Stroke Reduction
+
+## Rosenbaum, *Causal Inference*
+
+Chapters 1-3
+
+1. The Effects Caused By Treatments
+    - Bleeding George Washington
+2. Randomized Experiments
+    - Treatments for Ebola
+3. Observational Studies: The Problem
+    - Smoking and Periodontal Disease
+    - Smoking and Lung Cancer
+    - Boxplots and the Propensity Score
+
+## For Discussion
+
+- What was the most **important** thing you learned from reading Chapters 1-3?
 - What was the **muddiest**, least clear thing that arose in your reading?
 - What questions are at the front of your mind now?
+
+# Next Time?
+
+## Class 3: 2024-02-01 9 AM to 11 AM
+
+- Lab 1 due to Canvas by the start of class
+    - discussion of Lab 1 sketch
+- *Causal Inference* read Chapter 4 (Adjustments for Measured Covariates)
+- Skim Connors 1996 and Gum 2001 to see how propensity score matching has been done in practice
+- We'll walk through direct adjustment for the PS and 1:1 matching with the PS. (No R code in slides)
+- Class 4: Essentially nothing but R code.
+- Look into what you need to do to select an OSIA article (due Tuesday 2024-02-06)
+
+## Lab 1
+
+Use our Lab 1 template, please!
+
+1. Get access to the DIG teaching data from NHLBI
+2. Create a sample according to our specifications
+3. Create a Table 1 comparing MI to no MI (lots of help in template)
+4. Build a logistic regression model comparing MI to no MI (like Task 1 in Lab 0)
+5. Redefine sample and redo 3 and 4
+6. Add fitted probabilities from 5 to your data and plot against observed MI status (like Task 3 in Lab 0)
