@@ -1,7 +1,7 @@
 ---
 title: "500 Class 04"
-author: "<https://thomaselove.github.io/500-2023/>"
-date: "2023-02-09"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-02-08"
 date-format: iso
 format: 
   beamer:
@@ -12,7 +12,7 @@ format:
 
 ## Today's Agenda
 
-Today's class mostly involves a walk-through of the `toy` example, which is a simple simulated observational study of a treatment on three outcomes (one quantitative, one binary, and one time-to-event) which we will use to demonstrate the completion of 13 tasks using R, which include:
+Today's class involves a walk-through of the `toy` example, which is a simple simulated observational study of a treatment on three outcomes (one quantitative, one binary, and one time-to-event) which we will use to demonstrate the completion of 13 tasks using R, which include:
 
 - Fitting a propensity score model
 - Assessing pre-adjustment balance of covariates
@@ -24,6 +24,19 @@ Today's class mostly involves a walk-through of the `toy` example, which is a si
 
 Note we have three other (more realistic) examples we'll share in time: `lindner`, `dm2200` and `rhc`.
 
+## Readings for Today
+
+- Austin and Mamdani 2006
+    - Case study examining the effectiveness of statins after AMI
+    - Good antidote to only seeing me talk about these things
+- Normand 2001
+    - A matched analysis using propensity scores
+    - Inspiration for the Love plot
+- D'Agostino 1998
+    - Tutorial on Propensity Score Methods for Bias Reduction
+    - Initial steps towards dealing with missing data in propensity analyses
+
+
 # The `toy` Example
 
 ## The `toy` example
@@ -31,18 +44,8 @@ Note we have three other (more realistic) examples we'll share in time: `lindner
 The `toy` example presents methods for doing 1:1 greedy matching without replacement using the `Match` function from the `Matching` package, and for evaluating the balance before and after matching with `cobalt` and with an alternative strategy for obtaining Love plots.
 
 - The example uses 3 Rules I attribute to Rubin (2001) for determining when a sample comparison shows sufficient balance to allow for a reasonable regression model for the outcome. 
-    - **Please read** Rubin (2001) in advance of Class 6, which will mostly be about that example.
+    - **Please read** Rubin (2001) in advance of Class 06, which will mostly be about that example.
 - What to do in terms of a sensitivity analysis is discussed in the final section of that example, and we'll get to that later on.
 
-# Rosenbaum, Chapter 3
 
-## Causal Inference in Randomized Experiments
 
-- How do we test whether no effect is plausible?
-    - A uniformity trial (where everyone is treated in the same way) is a helpful way of thinking about how you'd assess this
-- Randomization is really making a random selection from a group of possible treatment assignments
-- The Logic and Mechanics of Hypothesis Tests of No Treatment Effect
-    - If the treatment effect is zero, would we ever see data like these?
-    - P values, significance levels, Rejecting and Retaining the Null
-- How large is the treatment effect?
-    - Requires some assumptions, even in randomized trials
