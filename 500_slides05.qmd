@@ -1,0 +1,458 @@
+---
+title: "500 Class 05"
+author: "<https://thomaselove.github.io/500-2023/>"
+date: "2024-02-15"
+date-format: iso
+format: 
+  beamer:
+    theme: Madrid
+    colortheme: lily
+    fig-align: center
+---
+
+## Today's Agenda
+
+- The `toy` and `lindner` examples
+- The `dm2200` example: Executing Matching in R
+  - Using `Matching` vs. `MatchIt`
+- Matching with (or without) a Propensity Score
+  - Matching with and without replacement
+  - Greedy vs. Caliper vs. Optimal Matches
+- Feinstein's Model for Research Architecture
+- A Few Words on Extensions to Matching
+  - Constrained and "Almost Exact" matching
+  - "Fine Balance" in matching
+  - Full Matching and Hansen's (2004) Example
+
+# Our R Examples
+
+## The `toy` example
+
+The `toy` example presents methods for doing 1:1 greedy matching without replacement using the `Match` function from the `Matching` package, and for evaluating the balance before and after matching with `cobalt` and with an alternative strategy for obtaining Love plots.
+
+- The example uses 3 Rules I attribute to Rubin (2001) for determining when a sample comparison shows sufficient balance to allow for a reasonable regression model for the outcome. 
+    - **Please read** Rubin (2001) in advance of Class 6, which will mostly be about that example.
+- What to do in terms of a sensitivity analysis is discussed in the final section of that example, and we'll get to that later on.
+
+## The `lindner` example
+
+The `lindner` example also does 1:1 greedy matching on the linear propensity score, in this case however there are more treated subjects than controls, so the default greedy approach taken is to not match all treated subjects, since you run out of controls before you get to them all. 
+
+- 1:1 nearest neighbor matches are demonstrated, first without replacement (in Task 4) and then **with** replacement (in Task 6).
+- The "with replacement" matching has some appealing features, not least of which being that now we can realistically create ATT estimates (since we match all treated subjects to a control, repeating some controls.)
+    - The match quality (in terms of a Love plot) is much better with replacement in this case.
+    - This does come with a cost, though. Most subjects are matched just a few times, but some are included more than 50 times!
+    
+## The `dm2200` example
+
+This example is solely about matching, and not things like subclassification, weighting and so on. The data are simulated, again, and I'm not really focusing on the outcome models, but rather just on demonstrating how to do the matching, and how to evaluate the quality of the covariate balance.
+
+## `dm2200`: First Four Matches
+
+We demonstrate the use of both the `Matching` package and the `MatchIt` package. First, using `Matching`, which is what `toy` and `lindner` use, we show:
+
+1. 1:1 nearest neighbor matching without replacement
+2. 1:2 nearest neighbor matching without replacement
+3. 1:3 nearest neighbor matching with replacement
+4. 1:1 nearest neighbor matching without replacement within a caliper on the (linear) propensity score
+
+## `dm2200`: Four Additional Matches
+
+Using the `MatchIt` package, we demonstate:
+
+1. 1:1 nearest neighbor matching without replacement
+2. 1:1 nearest neighbor matching without replacement within a caliper on the (linear) propensity score
+3. 1:1 optimal matching without replacement
+4. 1:2 optimal matching without replacement
+
+There are multiple other packages in the world for propensity matching, and `cobalt` describes and supports several of them, but these are the two I have most often used.
+
+- `MatchIt` has some features I really like, in particular, it's easier to work with it in `cobalt`, I think, and it also has one very annoying feature, in that it's hard to get the matched data set from it.
+
+# Matching Approaches (discussion built on Austin, 2014)
+
+## 1:1 Greedy Matching
+
+Greedy (or nearest neighbor) matching selects a treated subject and then selects as a matched control subject the untreated subject whose propensity score is closest to that of the treated subject. If multiple untreated subjects are equally close to the treated subject, one of these untreated subjects is selected at random, typically. Options include:
+
+1. Select treated subjects from highest to lowest propensity score.
+2. Select treated subjects from lowest to highest propensity score.
+3. Select sequentially treated subjects in the order of the best possible match. 
+    - First treated subject is the one who is closest to an untreated subject. 
+    - Second treated subject is the one closest to the remaining untreated, etc.
+4. Select treated subjects in a random order. Set a fixed random number seed so that the matched sample is reproducible in subsequent analyses.
+
+Results in all treated subjects being matched to a single control.
+
+## Greedy Matching with Replacement
+
+Matching *without* replacement means that once an untreated subject has been matched to a treated subject that untreated subject is no longer eligible for further matches to other treated subjects. As a result, each subject can be in at most one matched pair.
+
+Now, in matching *with* replacement, we allow members of the "control" pool to be reused in the matching process.
+
+- The process is somewhat simpler in the nearest neighbor case - just match each treated subject to the closest untreated subject.
+- Because untreated subjects are recycled and thus can be included in multiple matched sets, the order in which the treated subjects are selected has no effect on the formation of matched pairs.
+
+## Matching 1:k rather than 1:1
+
+Here, we simply try to obtain the k best matching untreated subjects for each treated subject.
+
+- In greedy matching, it is certainly possible that the quality of matches will drop considerably with extra matches, especially near the edges of the distribution of the propensity score.
+- 1:k matching is occasionally done with replacement, but of course we still want k unique matched untreated subjects for each treated subject.
+
+## Caliper Matching
+
+Match subjects only if they fall within a pre-specified maximum distance (the caliper distance.)
+
+- When using caliper matching, we usually match subjects on the logit of the propensity score using a caliper width as a proportion of the standard deviation of the logit of the propensity score.
+- Caliper matching can be combined with other distance metrics (where, for example, a few specific covariates are targeted for more precise matching.)
+- Matching with a caliper can be accomplished with or without replacement, and in 1:1 or 1:k settings.
+
+## Optimal Matching
+
+The main distinction that matters is between optimal matching approaches and nearest-neighbor (greedy) matching approaches.
+
+- Optimal matching forms matched pairs so as to minimize the average within-pair difference in propensity scores.
+- Optimal matching is rarely the first way I run an analysis (it's a bit slow, especially with large matching problems) but this problem is disappearing as smarter people and more effective computers emerge.
+
+## Double Robust Approaches 
+
+Nothing is stopping us from using regression adjustment along with matching. It's not unusual to consider the incorporation of the linear propensity score, or an important set of prognostic covariates in a setting where we are analyzing propensity-matched subjects.
+
+## Peter Austin's (2014) Comparison
+
+![](c05/figures/austin_1.png){width=90%}
+
+- You'll find this article on [our Sources page](https://github.com/THOMASELOVE/500-classes-2023/tree/main/sources).
+
+## Austin's conclusions re: 12 Algorithms
+
+- Larger numbers of matched pairs (from complete optimal or complete greedy matches) yields more precise estimates than smaller numbers of matched pairs (say, when a caliper is used and only some treated subjects are matched.)
+- Caliper matching often yields better "balance" and less biased estimates as compared to other algorithms.
+- So we have a bias - variance tradeoff in our estimation strategies, but in terms of MSE, caliper matching usually performs pretty well.
+- In terms of ordering of treated subjects for greedy matching or caliper matching, random selection is competitive with other options.
+- Optimal matching is pretty comparable to nearest neighbor matching with random selection order, and in fact, it's not clearly any better than that approach.
+
+# Feinstein's Model for Research Architecture (expanded by Neal Dawson)
+
+---
+
+![](c05/figures/dawson_1.png){width=90%}
+
+---
+
+![](c05/figures/dawson_2.png){width=90%}
+
+---
+
+![](c05/figures/dawson_3.png){width=90%}
+
+---
+
+![](c05/figures/dawson_4.png){width=90%}
+
+---
+
+![](c05/figures/dawson_5.png){width=90%}
+
+---
+
+![](c05/figures/dawson_6.png){width=90%}
+
+---
+
+![](c05/figures/dawson_7.png){width=90%}
+
+---
+
+![](c05/figures/dawson_8.png){width=90%}
+
+# A Published Example of My Early Propensity Score Work
+
+## Ahmed et al. 2012
+
+![](c05/figures/ahmed_2012_1.png)
+
+- doi:10.1016/j.ijcard.2010.09.006
+- M.I. Ahmed et al. *International Journal of Cardiology* 154 (2012) 128–133.
+
+## Abstract of Ahmed et al.
+
+![](c05/figures/ahmed_2012_2.png)
+
+## From the Introduction
+
+> The majority of heart failure (HF) patients are ≥65 years, and most
+deaths and HF-related hospitalizations in HF patients occur in this
+patient group. We have previously demonstrated that in a
+propensity-matched cohort of ambulatory patients with mild to
+moderate chronic HF, older age ($\geq 65$ years) was associated with
+increased mortality but not hospitalization.
+
+The objective of the current study was to examine the independent effect of older age on outcomes in chronic advanced systolic HF patients using a propensity-matched design.
+
+## Data Source and Subjects
+
+> This study was conducted using retrospective analysis of public-use copies of the Beta-Blocker Evaluation of Survival Trial (BEST) datasets obtained from the National Heart, Lung, and Blood Institute (NHLBI).
+
+> BEST was a multicenter randomized controlled trial of the beta-blocker bucindolol in chronic systolic HF.
+
+Patients with advanced systolic HF were enrolled from 90 different sites
+across the United States and Canada. All patients had New York Heart Association class III or IV symptoms and a left ventricular ejection fraction below 35%.
+
+## Exposure and Outcomes
+
+Exposure: We categorized (2707) patients into two age groups: younger ($< 65$ years) and older ($\geq 65$ years; n = 1091 or 40%).
+
+Primary outcomes were all-cause mortality and HF hospitalization. Secondary outcomes included cardiovascular mortality, HF mortality and all-cause hospitalization. All outcomes were centrally adjudicated.
+
+## Greedy Matching Approach
+
+> Using a greedy matching protocol described elsewhere in detail, we were able to match 603 of the 1091 older patients with 603 patients $< 65$ years old who had similar propensity scores.
+
+We began by using a non-parsimonious multivariable logistic regression model to estimate propensity score for age $\geq 65$ years for each of the 2707 participants. In the model, an age $\geq 65$ years was used as the dependent variable and all clinically relevant baseline characteristics
+(see Fig. 1, in two slides) were included as covariates.
+
+- The matching process used an SPSS macro published in the second edition of Levesque R, ed. *A Guide for SPSS and SAS Users* 2005. 
+
+## Propensity Matching Results
+
+Before matching, older patients were more likely to have coronary artery disease, atrial fibrillation and chronic kidney disease than younger patients. 
+
+After matching, absolute standardized differences between age groups
+were $< 10$% for all measured covariates (with the exception of white
+blood cell count which was 10.2%) with most values $< 5$% demonstrating
+substantial covariate balance across the groups (Love plot, next slide.)
+
+## Love Plot (Figure 1)
+
+![](c05/figures/ahmed_2012_3.png)
+
+## All-Cause Mortality Effect?
+
+All-cause mortality occurred in 33% (202/603) and 36% (215/603)
+of matched younger and older patients respectively during 4 years of
+follow-up. 
+
+The hazard ratio (HR) for all-cause mortality when older patients are compared to younger patients was HR = 1.05, 95% CI: 0.87 - 1.27.
+
+## Kaplan-Meier Plot for All-Cause Mortality
+
+![](c05/figures/ahmed_2012_4.png)
+
+## Table 2
+
+![](c05/figures/ahmed_2012_5.png)
+
+- Significant association of older age with increased risk of HF mortality.
+
+## Figure 3 (Subgroup Analyses)
+
+![](c05/figures/ahmed_2012_6.png)
+
+## Conclusions
+
+In conclusion, in patients with advanced chronic systolic HF, older
+age is an important marker of increased mortality and hospitalization,
+but has no intrinsic effect on outcome. Therapeutic decisions in older
+adults with advanced HF should not be biased on the basis of age alone.
+
+## Funding and Acknowledgements
+
+Dr. Ahmed is supported by the National Institutes of Health through grants (R01-HL085561 and R01-HL097047) from the National Heart, Lung, and Blood Institute and a generous gift from Ms. Jean B. Morris of Birmingham, Alabama.
+
+"The Beta-Blocker Evaluation of Survival Trial (BEST) study was
+conducted and supported by the NHLBI in collaboration with the
+BEST Investigators. This manuscript was prepared using a limited
+access dataset obtained by the NHLBI and does not necessarily
+reflect the opinions or views of the BEST Study or the NHLBI." The
+authors of this manuscript have certified that they comply with
+the Principles of Ethical Publishing in the *International Journal of
+Cardiology*.
+
+# Some Extensions to Propensity Matching
+
+## Is Regression Adjustment Unnecessary?
+
+- Matching and stratification are old and trusted methods of adjustment for observational studies, but the difficulty of implementing them led earlier practitioners to prefer regression.
+- Modern extensions to matching methods let us perform optimal matches, full matches and optimal full matches, and to control imbalance (or at least reduce bias reduction) in ways that have become attainable only in recent years.
+
+Good references include Rosenbaum (2010) and Hansen (2004) for example.
+
+## General Approaches to Optimal or Near-Optimal Constrained Matching
+
+1. Calculate propensity scores
+2. Establish a **distance matrix**
+
+This is just a table with one row for each treated subject and one column for each potential control.
+
+- The "distances" can be squared differences in propensity scores between the subjects, Mahalanobis distances, or something else.
+- To use calipers, we set to $\infty$ all cells in the table corresponding to a propensity difference which exceeds the caliper.
+
+## A Small Distance Matrix
+
+Consider four treated subjects (T1, T2, T3 and T4) and six control subjects (C1, C2, C3, C4, C5 and C6.) 
+
+- We have a difference score (perhaps the absolute difference in propensity for treatment) for each comparison. Some of these are infinite.
+- We also have each subject categorized as (Y)oung or (O)ld, and we haven't decided yet how important this is for our matching.
+
+Subject | C1 (Y) | C2 (O) | C3 (O) | C4 (Y) | C5 (O) | C6 (O)
+:-----: | -----: | -----: | -----: | -----: | -----: | -----: 
+T1 (Y)  | .23 | .47 | .39 | $\infty$ | .51 | .35
+T2 (O)  | .45 | $\infty$ | .28 | .31 | .42 | $\infty$
+T3 (O)  | $\infty$ | .35 | $\infty$ | .27 | .44 | .28
+T4 (O)  | .31 | .26 | .51 | .29 | $\infty$ | .24
+
+## OK, so Who Gets Matched?
+
+Subject | C1 (Y) | C2 (O) | C3 (O) | C4 (Y) | C5 (O) | C6 (O)
+:-----: | -----: | -----: | -----: | -----: | -----: | -----: 
+T1 (Y)  | .23 | .47 | .39 | $\infty$ | .51 | .35
+T2 (O)  | .45 | $\infty$ | .28 | .31 | .42 | $\infty$
+T3 (O)  | $\infty$ | .35 | $\infty$ | .27 | .44 | .28
+T4 (O)  | .31 | .26 | .51 | .29 | $\infty$ | .24
+
+>- Now, who gets matched?
+>- Treated subject T1 matches to C1
+>- T2 matches to C3
+>- T3 matches to C4 (or maybe C6 - is age important?)
+>- T4 matches to C6 (or C2, or C4, hmmm....)
+
+## Almost Exact Matching
+
+- Suppose a few of the covariates are of enormous importance - want to match exactly on them wherever possible.
+
+We could add a penalty (but perhaps not an infinite penalty) to the distance matrix when the specified covariates fail to match, and that is the main approach that we use.
+
+- Adding 2 to the Mahalanobis distance for mismatches roughly doubles the importance of that covariate as compared to the others, for example.
+
+There's a lot of active work in this area developing various algorithms that permit finer control.
+
+## "Fine Balance" in Matching
+
+- Constrain optimal matching that forces a nominal variable to be balanced, without restricting who is matched to whom.
+
+This is especially useful if...
+
+- you have a nominal variable with many levels
+- you have a rare binary variable that is difficult to control using a distance
+- you are focused on the interaction of several nominal variables
+
+It is also possible to get specific imbalance patterns.
+
+## Fine Balance: Initial Distance Matrix
+
+Subject | C1 (Y) | C2 (O) | C3 (O) | C4 (Y) | C5 (O) | C6 (O)
+:-----: | -----: | -----: | -----: | -----: | -----: | -----: 
+T1 (Y)  | .23 | .47 | .39 | $\infty$ | .51 | .35
+T2 (O)  | .45 | $\infty$ | .28 | .31 | .42 | $\infty$
+T3 (O)  | $\infty$ | .35 | $\infty$ | .27 | .44 | .28
+T4 (O)  | .31 | .26 | .51 | .29 | $\infty$ | .24
+
+Suppose we want to get optimal balance on the propensity score while matching perfectly on the age category (Y/O).
+
+- We have 4 treated subjects (1 young, 3 old)
+- We have 6 potential controls (2 young, 4 old)
+- So we need to remove 1 young and 1 old in matching
+
+## Fine Balance: Augmented Distance Matrix
+
+Subject | C1 (Y) | C2 (O) | C3 (O) | C4 (Y) | C5 (O) | C6 (O)
+:-----: | -----: | -----: | -----: | -----: | -----: | -----: 
+T1 (Y)  | .23 | .47 | .39 | $\infty$ | .51 | .35
+T2 (O)  | .45 | $\infty$ | .28 | .31 | .42 | $\infty$
+T3 (O)  | $\infty$ | .35 | $\infty$ | .27 | .44 | .28
+T4 (O)  | .31 | .26 | .51 | .29 | $\infty$ | .24
+*Extra 1* | 0 | $\infty$ | $\infty$ | 0 | $\infty$ | $\infty$ 
+*Extra 2* | $\infty$ | 0 | 0 | $\infty$ | 0 | 0
+
+Add 2 rows to the matrix, then run the match
+
+- *Extra 1* pulls away one young control
+- *Extra 2* pulls away one old control
+
+The binary age category will be perfectly balanced across the matched sample, but the partners within each individual pair are not required to be in the same age category.
+
+## Fine Balance General Procedure
+
+To get the minimum distance match with fine balance (on a nominal covariate, say GROUP)...
+
+1. Cross tabulate GROUP with treatment indicator
+2. Determine # of controls to remove from each category of GROUP to achieve perfect balance
+3. Add one row for each control that must be removed, with 0 distance to its own category and infinite distance to all others
+4. Find an optimal match for this square matrix
+5. Discard extra rows and their matched controls
+
+# Full Matching
+
+## Full Matching in Observational Studies
+
+- In the past, it has been tough to implement full matching in observational studies, even though it is appealing in principle.
+- Alignment of comparable treated and control subjects is as good as any alternate method, and potentially much better.
+- Hansen (2004) modifies full matching with modifications to minimize variance as well as bias
+
+In this example,
+
+- Optimal full matching removes as much as 99% of the bias along a PS on which treated and control means are separated by 1.1 SD's. 
+- Reduces to insignificance biases along 27 covariates, while making use of more, not less, of the data than regression based analyses.
+
+## Hansen (2004) SAT Coaching Study
+
+- Survey of a random sample of 1995-1996 SAT test takers about their preparation
+- 12% of respondents had completed extracurricular test preparation courses
+- Matching looked unattractive to the original researchers due to significant reduction in sample size, but they only considered 1:1 matching.
+- Do 1:k matching options look better?
+
+---
+
+![](c05/figures/hansen_1.png){width=90%}
+
+---
+
+![](c05/figures/hansen_2.png){width=90%}
+
+---
+
+![](c05/figures/hansen_3.png){width=90%}
+
+---
+
+![](c05/figures/hansen_4.png){width=90%}
+
+---
+
+![](c05/figures/hansen_5.png){width=90%}
+
+---
+
+![](c05/figures/hansen_6.png){width=90%}
+
+---
+
+![](c05/figures/hansen_7.png){width=90%}
+
+---
+
+![](c05/figures/hansen_8.png){width=90%}
+
+## SAT Coaching Study Results
+
+- Raw differences of treated and control group means were 41 points on Math and 9 on Verbal
+- Full matching leads to aggregate contrasts of 26 points on Math and 1 point on the verbal.
+    - Standard errors for these estimates are around 5 points.
+- Surprised that Verbal effect is so small?
+    - Control is not "no prep at all"
+    - Estimated effect of treatment on the controls is 3 for Math and -8 on Verbal.
+- Method doesn't require homogeneity of coaching effects.
+- Whether and to what degree coaching is beneficial appears to vary greatly across students.
+
+## Rosenbaum Chapter 5
+
+1. What was the most important thing you learned from reading Chapter 5?
+2. What was the muddiest, least clear thing that arose in your reading?
+
+## Next Time
+
+- Designing Observational Studies (Rubin 2001 and Rubin 2004)
+- Discussion of Project Proposals
+
