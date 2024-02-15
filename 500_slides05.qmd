@@ -1,6 +1,6 @@
 ---
 title: "500 Class 05"
-author: "<https://thomaselove.github.io/500-2023/>"
+author: "<https://thomaselove.github.io/500-2024/>"
 date: "2024-02-15"
 date-format: iso
 format: 
