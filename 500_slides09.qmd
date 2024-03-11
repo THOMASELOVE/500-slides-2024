@@ -13,14 +13,27 @@ format:
 
 ## Lab 4 sketch will be posted by class time
 
+My choices: deliberately (nearly) guaranteed not to be yours...
+
+- I studied the subpopulation of patients who have no prior MI (`PREVMI` == 0).
+- The exposure of interest to me was NYHA Functional Class (`FUNCTCLS`) of III or IV, as compared to I or II.
+- The outcome I studied was all-cause hospitalization (`HOSP`).
+
+I am anticipating that among the patients without a prior myocardial infarction, those with baseline NYHA Class III or IV will be hospitalized more freqently than those with NYHA Class I or II.
+
+I chose 15 covariates (listed in the Lab 4 sketch) including quantities, binary and multi-categorical covariates.
+
+## My Lab 4 Results (see Sketch for Details)
+
 1. Build an appropriate Table 1.
     - Several covariates are unbalanced by exposure.
     - Rubin's Rules are not quite where we want them.
 2. Unadjusted estimate of treatment effect on outcome.
-    - Should indicate a fairly substantial effect.
+    - Indicates a fairly substantial effect.
 3. 1:1 matching with sensitivity or stability analysis.
     - Love plots look much improved after greedy matching.
     - 760 matched pairs, much better Rubin's Rule 1.
+    - Discussed both sensitivity *and* stability analyses in sketch.
 4. Weighted (with regression adjustment if you like).
     - Excellent Love plot, Rubin's Rules after ATT weighting
     - Effective Sample Sizes: 760 treated, 1206 control.
