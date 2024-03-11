@@ -1,0 +1,73 @@
+---
+title: "500 Class 15"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-05-02"
+date-format: iso
+format: 
+  beamer:
+    theme: Madrid
+    colortheme: lily
+    fig-align: center
+---
+
+# Some Closing Thoughts
+
+## A Few Advantages of Propensity Methodology
+
+- Results can be persuasive even to audiences with limited statistical training.
+- Though estimating the PS requires some care, the comparability of treated and control patients can be verified simply.
+- PS methods address selection bias well.
+- PS methods may be combined with other sorts of adjustments.
+
+## Strategic Issues
+
+- How can we make our investigations compelling to our intended audience?
+- Why is this hard?
+    - Audience is not focused on statistical techniques
+    - Audience may have limited training in statistics
+- Why is this important?
+    - Who makes key policy decisions?
+    - Who needs to be convinced by the evidence?
+- Design observational studies
+    - Exert as much experimental control as possible, carefully consider the selection process, and anticipate hidden biases
+- Focus on simple comparisons
+    - Increase impact of results on consumers
+- Compare subjects who looked comparable prior to treatment
+- Use sensitivity analyses to delimit discussions of hidden biases due to unobserved covariates
+
+## Some Cautions and Limitations
+
+- Hidden Bias: Beware unmeasured covariates which affect outcomes and/or assignment.
+    - Sensitivity Analysis helps quantify the problem
+- This is a reasonable method with fairly large samples.
+    - Matching vs. stratification vs. adjustment methods
+- Options narrow as an investigation proceeds. 
+    - Sadly, though OS work cries out for design, we’re often working with secondary data, where we have fewer options
+
+## What should always be done in an OS ... and often isn't?
+
+1. Collect data so as to be able to model selection
+2. Demonstrate need for adjustment - selection bias
+3. Carefully record intervention time - adjust only for things present before or at time of  intervention.
+4. Ensure baseline characteristic overlap [comparability]
+5. Check baseline characteristic balance after adjustment
+6. Specify relevant post-adjustment population with care 
+7. Estimate treatment effect in light of adjustment
+8. Estimate sensitivity of results to potential hidden bias
+
+## How Can We Avoid Being Misled by Observational Studies?
+
+1. What differentiates an observational study from a randomized controlled trial?
+    - One key element: potential for selection bias.
+2. What is selection bias, and why should I care about it?
+    - Baseline characteristics of comparison groups are different in ways that affect the outcome.
+3. What can be done to deal with selection bias in observational studies?
+    - Propensity score methods for overt bias.
+    - Sensitivity analyses to deal with hidden bias.
+
+## Thank you very much.
+
+Special thanks to Leila Hojat, for her remarkable and hard work this semester.
+
+- Final Project Submissions are due to Canvas at 9 AM on Monday 2023-05-06 from everyone.
+- When prompted via email by the University (usually in late April), please visit <https://webapps.case.edu/courseevals/> and complete the course evaluations before they close.
