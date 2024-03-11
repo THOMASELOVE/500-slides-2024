@@ -1,0 +1,55 @@
+---
+title: "500 Class 11"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-04-04"
+date-format: iso
+format: 
+  beamer:
+    theme: Madrid
+    colortheme: lily
+    fig-align: center
+    linkcolor: white
+---
+
+## Today's OSIA Presentations
+
+1st Reader | 2nd Reader |  Manuscript 
+:-----------: | :-----------: | :-----------------------------------------------------------------------
+Anya | Lent | Hynes DM 2023 [Risk of Suicide‑Related Outcomes After SARS‑COV‑2 Infection: Results from a Nationwide Observational Matched Cohort of US Veterans](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Hynes_2023.pdf), with [supplement](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Hynes_2023_supplement.pdf) *JGIM*
+Akhil | Sara | Lysyakov M and Viswanathan S 2023 [Threatened by AI: Analyzing Users' Responses to the Introduction of AI in a Crowd-Sourcing Platform](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Lysyakov_2023.pdf) with [supplement](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Lysyakov_2023_supplement.pdf) *Information Systems Research*
+Seth | Ava | Xu J et al. 2023 [Timing of vasopressin initiation and mortality in patients with septic shock: analysis of the MIMIC-III and MIMIC-IV databases](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Xu_2023.pdf) *BMC Infectious Diseases*
+
+## Discussion of Project Updates
+
+Details to come.
+
+## Rosenbaum Postscript, Glossary
+
+Postscript: Key Ideas, Chapter by Chapter
+
+Glossary: Average Treatment Effect, Boxplot, Causal Effect, Complier Average Causal Effect, Covariate, Instrument, Natural Experiment, Observational Study, Propensity Score, Quasi-experimental Device, Randomized Experiment, Sensitivity Analysis
+
+## Rosenbaum: Further Reading
+
+- Angrist and Krueger 1999 [Empirical Strategies in Labor Economics](https://www.sciencedirect.com/science/article/abs/pii/S1573446399030047)
+- Cox and Reid 2000 [The Theory and Design of Experiments (pdf)](https://www.researchgate.net/publication/268318930_The_Theory_of_Design_of_Experiments)
+- Gerber and Green 2012 *Field Experiments* [Chapter 1 (pdf)](https://jonnyphillips.github.io/FLS6415/Class_3/Gerber%20and%20Green%202012%20Ch.1.pdf), [Review from World Bank](https://blogs.worldbank.org/impactevaluations/gerber-and-green-s-new-textbook-on-field-experiments-should-you-read-it-and-what-should-they-add-for)
+- Hernan and Robins 2010 (or the related [Causal Inference: What If? preprint pdf](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/01/hernanrobins_WhatIf_2jan24.pdf))
+- Imbens and Rubin 2015 *Causal Inference* [Review from World Bank](https://blogs.worldbank.org/impactevaluations/review-imbens-and-rubin-causal-inference-book)
+- Morgan and Winship 2014 *Counterfactuals and Causal Inference* and see [The Estimation of Causal EFfects from Observational Data, 1999](https://www.annualreviews.org/doi/abs/10.1146/annurev.soc.25.1.659)
+- Reichardt 2019 *Quasi-Experimentation* [excerpts at Google Books](https://books.google.com/books/about/Quasi_Experimentation.html?id=_z5ovgEACAAJ)
+- Rosenbaum 2017 *Observation and Experiment* (see our Shared Drive)
+- Rutter 2007 [Identifying the Environmental Causes of Disease (pdf)](https://acmedsci.ac.uk/file-download/34654-119615475058.pdf)
+- Shadish, Cook and Campbell 2002 *Experimental and Quasi-Experimental Designs for Generalized Causal Inference* [excerpts at Google Books](https://books.google.com/books/about/Experimental_and_Quasi_experimental_Desi.html?id=o7jaAAAAMAAJ)
+
+## Reminders for Next Week
+
+See the [Class 11 README](https://github.com/THOMASELOVE/500-classes-2024/blob/main/class11/README.md)
+
+Project Presentations from Jesse, Akhil, Morgan, Orsino, and Sriram
+
+- Speakers: Your slides and abstract need to be posted to our **Shared Drive** by Noon on the day **before** your presentation. (Wednesday 2024-04-10 at Noon.)
+- No Zoom for the rest of the semester's classes, and no additional slides after today.
+- Evaluation form for project presentations will be made available, and linked at each class README.
+
+

@@ -1,0 +1,46 @@
+---
+title: "500 Class 10"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-03-28"
+date-format: iso
+format: 
+  beamer:
+    theme: Madrid
+    colortheme: lily
+    fig-align: center
+    linkcolor: white
+---
+
+## Today's OSIA Presentations
+
+1st Reader | 2nd Reader |  Manuscript 
+:-----------: | :-----------: | :-----------------------------------------------------------------------
+Morgan | Lydia  | Cho M and Lee CH 2022 [Childhood Maltreatment and Repeat Offending in Juvenile Delinquents: A Propensity Score Matched-Control Study](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Cho_2022.pdf), with [supplement](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Cho_2022_supplement.pdf) *Youth & Society*
+Karlo  | Miza  | Hersh C et al. 2020 [Effect of switching from natalizumab to moderate- vs high-efficacy DMT in clinical practice](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Hersh_2020.pdf), with [supplement](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Hersh_2020_supplement.pdf) *Neurology: Clinical Practice*
+John  | Chris  | Lehr CJ et al. 2020 [The impact of change in definition of increased-risk donors on survival after lung transplant](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Lehr_2020.pdf), with [commentary](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Lehr_2020_commentary.pdf) *J Thorac Cardiovasc Surg*
+
+## Rosenbaum Chapter 9
+
+- Are Small Daily Doses of Alcohol Beneficial?
+- Oncologists vs. Cardiologists
+- A dissenting voice from a new tactic: Mendelian Randomization
+- The Answer might be Complex; A Traditional Toxin; Total Mortality
+- Is Part or All of the Supposed Heart Benefit Simply a Mistake?
+
+So what do we do?
+
+- What was the most important thing?
+- What was the muddiest, most confusing thing?
+
+## Reminders for Next Week
+
+See the [Class 10 README](https://github.com/THOMASELOVE/500-classes-2024/blob/main/class10/README.md)
+
+- No office hours on Monday or Wednesday 4/1 and 4/3.
+- Project Update - due from **everyone** at 9 AM Tuesday to Canvas
+- OSIA slides from 1st readers (Anya, Akhil and Seth) by 1 PM Wednesday
+- 2nd reader slides from Lent, Sara and Ava by 7:30 AM Thursday
+- Video OSIA: 2nd reader slides due by class time from Akhil, Anya, Hala, John, Justin, Karlo, Morgan, Naji, Orsino, Sam, Seth, Sid and Sriram.
+- We'll (briefly) review the rest of the Rosenbaum book (Postscript and Glossary, primarily, and a couple of thoughts on Further Reading)
+
+

@@ -1,0 +1,82 @@
+---
+title: "500 Class 09"
+author: "<https://thomaselove.github.io/500-2024/>"
+date: "2024-03-21"
+date-format: iso
+format: 
+  beamer:
+    theme: Madrid
+    colortheme: lily
+    fig-align: center
+    linkcolor: white
+---
+
+## Lab 4 sketch will be posted by class time
+
+1. Build an appropriate Table 1.
+    - Several covariates are unbalanced by exposure.
+    - Rubin's Rules are not quite where we want them.
+2. Unadjusted estimate of treatment effect on outcome.
+    - Should indicate a fairly substantial effect.
+3. 1:1 matching with sensitivity or stability analysis.
+    - Love plots look much improved after greedy matching.
+    - 760 matched pairs, much better Rubin's Rule 1.
+4. Weighted (with regression adjustment if you like).
+    - Excellent Love plot, Rubin's Rules after ATT weighting
+    - Effective Sample Sizes: 760 treated, 1206 control.
+5. Compare your results, and describe any concerns.
+    - Matched, weighted, unadjusted estimates pretty similar.
+
+This is, of course, the set of analyses for your Project.
+
+## Today's OSIA Presentations
+
+1st Reader | 2nd Reader |  Manuscript 
+:-----------: | :-----------: | :-----------------------------------------------------------------------
+Sid Dugar | Jesse Chen | Lan P et al. 2019 [Utilization of echocardiography during septic shock was associated with a decreased 28-day mortality: a propensity score-matched analysis of the MIMIC-III database](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Lan_2019.pdf) *Annals of Translational Medicine*
+Hala Nas | Aman Pande | Wang Q et al. 2022 [Adverse Events Following Limited Resection versus Stereotactic Body Radiation Therapy for Early Stage Lung Cancer](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Wang_2022.pdf) *Annals American Thoracic Society*
+Sriram Satyavolu | Marie Masotya | Webbe JWH et al. 2022 [Outcomes in relation to early parenteral nutrition use in preterm neonates born between 30 and 33 weeks' gestation: a propensity score matched observational study](https://github.com/THOMASELOVE/500-osia-2024/blob/main/pdf/Webbe_2022.pdf) *Arch Dis Child Fetal Neonatal Ed*
+
+## Rosenbaum Chapter 8
+
+Replication, Resolution and Evidence Factors
+
+- Replication is Not Repetition
+- Repetition without Resolution
+- Varied Views of a Single Object
+- Evidence Factors
+
+The lead in the blood of children example is discussed in several of Paul's books, including Rosenbaum 2010 (see our Sources page.)
+
+- What was the most important thing?
+- What was the muddiest, most confusing thing?
+
+## Replication and Replication Projects: Some Guidance
+
+- [Replication and Replicability in Science](https://www.ncbi.nlm.nih.gov/books/NBK547524/) from the National Academies of Sciences, Engineering, and Medicine.
+- Nosek B and Errington TM [What is replication?](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7100931/)
+- Moreau D and Wiebels K [Ten simple rules for designing and conducting undergraduate replication projects](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10019630/)
+- Royal Society Open Science [Replication Studies: Guidance for Authors and for Referees and Reviewers](https://royalsocietypublishing.org/rsos/replication-studies)
+- Wikipedia on the [Replication Crisis](https://en.wikipedia.org/wiki/Replication_crisis)
+- Ioannidis JPA 2005 [Why Most Published Research Findings are False](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1182327/)
+- Peng RD and Hicks SC 2021 [Reproducible Research: A Retrospective](https://www.annualreviews.org/doi/abs/10.1146/annurev-publhealth-012420-105110) *Annual Review of Public Health*
+
+## Bayes Factors as a measure of strength of evidence
+
+The Bayes factor is a ratio of two competing statistical models represented by their evidence, and is used to quantify the support for one model over the other.
+
+See, for instance, 
+
+- Wikipedia on [Bayes factor](https://en.wikipedia.org/wiki/Bayes_factor)
+- The [BayesFactor package](https://cran.r-project.org/web/packages/BayesFactor/vignettes/manual.html) in R
+- Stefan et al. 2019  [A tutorial on Bayes Factor Design Analysis using an informed prior](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6538819), doi: 10.3758/s13428-018-01189-8
+
+## Reminders for Next Week
+
+See the [Class 09 README](https://github.com/THOMASELOVE/500-classes-2024/blob/main/class09/README.md)
+
+- OSIA slides from 1st readers (Morgan, Karlo and John) by 1 PM Wednesday
+- 2nd reader slides from Lydia, Miza and Chris by 7:30 AM Thursday
+- Video OSIA: 1st reader slides due by class time from Aman, Ava, Chris, Jesse, Justin, Lent, Lydia, Marie, Miza, Naji, Orsino, Sam and Sara.
+- We'll discuss Rosenbaum Chapter 9 (Uncertainty and Complexity)
+
